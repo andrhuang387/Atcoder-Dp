@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100001
+#define INF 10000000000
+vector<int> dp(100001);
+lli n, m;
+vector<int> redge[100001];
+int solve(int v)
+{
+    if (dp[v] != 0)return dp[v];
+    for(auto it: redge[v]){
+        dp[v] = max(dp[v], solve(it)+1);
+    }
+    return dp[v];
+}
+int main() {
+    cin>>n>>m;
+    for(int i = 0;i<m;i++){
+        int s,e;
+        cin>>s>>e;
+        redge[e].push_back(s);  ///indexed at 1
+    }
+    for(int i  =1; i<=n;i++){
+        solve(i);
+    }
+    int ans = 0;
+    for(int i  =1; i<=n;i++)ans = max(ans, dp[i]);
+    cout<<ans<<endl;
+
+}
