@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define lli long long int
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 100001
+#define INF 10000000000
+#define mod 1000000007
+#define lld long long double
+lli n, w;
+double a[3002];
+double dp[3002][3002];
+int vis[3002][3002];
+double solve(int pos, int headsleft)
+{
+    if(headsleft <0 ) return 0.0;       ///Headsleft should be less than 0 since it is possible to have 0 heads left but the remainder are all negative
+    if(pos==0)return (headsleft==0);     ///if position = 0 and headsleft == 0, then keep the current value because we have worked. If positoin == 0and heads< or > 0, it fails the parameters and desired value
+    if(vis[pos][headsleft]) return dp[pos][headsleft];
+    vis[pos][headsleft]  = 1;    ///We want to use a binary visited 2d array because checking the values of the dp is wayy too slow. 
+    return dp[pos][headsleft] = a[pos]*solve(pos-1, headsleft-1) + (1.0-a[pos])*solve(pos-1, headsleft);
+}
+int main() {
+    cin>>n;
+    for(int i  =1;i<=n;i++)cin>>a[i];
+    double ans = 0;
+    for(int tails  =0; tails<=n/2; tails++){
+        int heads = n  -tails;
+        ans+=solve(n, heads);
+    }
+    printf("%.9lf\n",ans);
+}
